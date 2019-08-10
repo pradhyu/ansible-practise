@@ -4,6 +4,7 @@
   remote_user: openhabian
   vars:
     prompt_text: "what is the file name you want to create?"
+    directory: "~/" # home directory
     
   vars_prompt:
   - name: filename 
@@ -17,17 +18,22 @@
     find:
       paths: /tmp
       recurse: yes
+  - name: collect files in ~/
+    command: "ls {{directory}}"
+    register: dir_out
   - name: create file 
     file: 
-      path: ~/{{ filename}}
+      path: "{{directory}}/{{ filename}}"
       owner: openhabian
       group: openhabian
       state: touch
       mode: '0755'
   - name: Check is ls installed
-    shell: command -v lks >/dev/null 2>&1
+    shell: command -v ls >/dev/null 2>&1
     register: is_ls_exist
     ignore_errors: yes
 
-  - debug: msg="{{ is_ls_exist.rc }}" # it returns rc 0
+  - debug: msg="{{ is_ls_exist.rc }} " # it returns rc 0
   - debug: var=is_ls_exist
+  - debug: var=" {{ dir_out }} "
+    with_items: dir_out.stdout_lines
