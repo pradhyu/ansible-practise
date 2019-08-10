@@ -2,10 +2,12 @@
 - name: list files
   hosts: ansi-child
   remote_user: openhabian
+  vars:
+    prompt_text: "what is the file name you want to create?"
+    
   vars_prompt:
-
   - name: filename 
-    prompt: "what is the filename you want to create?"
+    prompt: "{{ prompt_text }}"
     private: no # yes for password 
 
   tasks:
@@ -22,3 +24,10 @@
       group: openhabian
       state: touch
       mode: '0755'
+  - name: Check is ls installed
+    shell: command -v lks >/dev/null 2>&1
+    register: is_ls_exist
+    ignore_errors: yes
+
+  - debug: msg="{{ is_ls_exist.rc }}" # it returns rc 0
+  - debug: var=is_ls_exist

@@ -6,7 +6,7 @@
         {
             "label": "run playbook",
             "type": "shell",
-            "command": "ansible_host.sh",
+            "command": "sh ./ansible_host.sh",
             "group": {
                 "kind": "build",
                 "isDefault": true
