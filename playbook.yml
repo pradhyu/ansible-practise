@@ -35,5 +35,5 @@
 
   - debug: msg="{{ is_ls_exist.rc }} " # it returns rc 0
   - debug: var=is_ls_exist
-  - debug: var=" {{ dir_out }} "
+  - debug: msg=" {{ dir_out }} "
     with_items: dir_out.stdout_lines
