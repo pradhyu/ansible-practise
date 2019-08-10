@@ -1,0 +1,24 @@
+---
+- name: list files
+  hosts: ansi-child
+  remote_user: openhabian
+  vars_prompt:
+
+  - name: filename 
+    prompt: "what is the filename you want to create?"
+    private: no # yes for password 
+
+  tasks:
+  - name: print whoami
+    shell: whoami
+  - name: list files 
+    find:
+      paths: /tmp
+      recurse: yes
+  - name: create file 
+    file: 
+      path: ~/{{ filename}}
+      owner: openhabian
+      group: openhabian
+      state: touch
+      mode: '0755'
